@@ -1,6 +1,6 @@
-class UsersController < ApplicationController
+class Admin::UsersController < ApplicationController
   
-  layout 'welcome'
+  layout 'application'
   
   # GET /users
   # GET /users.xml
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
-      format.html { render :layout => 'welcome' }# show.html.erb
+      format.html # show.html.erb
       format.xml  { render :xml => @user }
     end
   end
@@ -30,17 +30,17 @@ class UsersController < ApplicationController
     @user = User.new
 
     respond_to do |format|
-      format.html { render :layout => 'welcome' }# new.html.erb
+      format.html # new.html.erb
       format.xml  { render :xml => @user }
     end
   end
 
   # GET /users/1/edit
   def edit
-    @user = current_user
+    @user = User.find(params[:id])
     
     respond_to do |format|
-      format.html { render :layout => 'welcome' }# new.html.erb
+      format.html # new.html.erb
     end
     
   end
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         flash[:notice] = 'Registration success.'
-        format.html { redirect_to(@user) }
+        format.html { redirect_to(admin_user_path(@user)) }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
         format.html { render :action => "new" }
@@ -65,12 +65,12 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.xml
   def update
-    @user = current_user
+    @user = User.find(params[:id])
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
         flash[:notice] = 'Successfully updated.'
-        format.html { redirect_to(@user) }
+        format.html { redirect_to(admin_user_path(@user)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -86,7 +86,7 @@ class UsersController < ApplicationController
     @user.destroy
 
     respond_to do |format|
-      format.html { redirect_to(users_url) }
+      format.html { redirect_to(admin_users_url) }
       format.xml  { head :ok }
     end
   end
